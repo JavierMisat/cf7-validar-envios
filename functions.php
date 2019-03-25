@@ -14,6 +14,7 @@ function validar_envio_cf7() {
     ?>
     <script type="text/javascript">
         var disableSubmit = false;
+        const enviarValue = document.querySelector('.wpcf7-submit').value;
         document.querySelector('input.wpcf7-submit[type="submit"]').addEventListener('click', function() {
             document.querySelector('input[type="submit"]').setAttribute('value', 'Enviando...')
             if (disableSubmit == true) {
@@ -25,11 +26,10 @@ function validar_envio_cf7() {
 
         var wpcf7Elm = document.querySelector( '.wpcf7' );
         wpcf7Elm.addEventListener( 'wpcf7submit', function( event ) {
-            //document.querySelector('input[type="submit"]').setAttribute('value', 'Enviar')
+            document.querySelector('input[type="submit"]').setAttribute('value', enviarValue)
             disableSubmit = false;
         }, false );
     </script>
     <?php
 }
-
 
