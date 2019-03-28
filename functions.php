@@ -7,29 +7,45 @@
  * Time: 1:30 AM
  */
 
-// Prevenir multiples envíos de WPCF7 forms
-add_action( 'wp_footer', 'validar_envio_cf7' );
 
-function validar_envio_cf7() {
+// Prevenir multiples envíos de WPCF7 forms
+add_action('wp_footer', 'validar_envio_cf7');
+
+function validar_envio_cf7()
+{
     ?>
     <script type="text/javascript">
-        var disableSubmit = false;
-        const enviarValue = document.querySelector('.wpcf7-submit').value;
-        document.querySelector('input.wpcf7-submit[type="submit"]').addEventListener('click', function() {
-            document.querySelector('input[type="submit"]').setAttribute('value', 'Enviando...')
+        let disableSubmit = false;
+        let objInput = null;
+        let enviarValue = null;
+
+        try {
+            objInput = document.querySelector('.wpcf7-submit');
+            enviarValue = objInput.value;
+        } catch (e) {
+            objInput = document.querySelector('.wpcf7 button[type="submit"]');
+            enviarValue = objInput.textContent;
+        }
+
+        objInput.addEventListener('click', function (e) {
+            objInput.setAttribute('value', 'Enviando...');
+            objInput.textContent = 'Enviando...';
             if (disableSubmit == true) {
+                e.preventDefault();
                 return false;
             }
             disableSubmit = true;
             return true;
         });
 
-        var wpcf7Elm = document.querySelector( '.wpcf7' );
-        wpcf7Elm.addEventListener( 'wpcf7submit', function( event ) {
-            document.querySelector('input[type="submit"]').setAttribute('value', enviarValue)
+        let wpcf7Elm = document.querySelector('.wpcf7');
+        wpcf7Elm.addEventListener('wpcf7submit', function (event) {
+
+            objInput.setAttribute('value', enviarValue);
+            objInput.textContent = enviarValue;
             disableSubmit = false;
-        }, false );
+
+        }, false);
     </script>
     <?php
 }
-
